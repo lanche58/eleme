@@ -35,3 +35,13 @@ https://blog.csdn.net/qq_38209578/article/details/79227477
 ## vue-axios的使用方法
 
 https://blog.csdn.net/qq_38209578/article/details/79225698
+
+## 问题一
+
+![](https://raw.githubusercontent.com/AzkabanV/IMG-repository/master/img_11.png)
+
+![](https://raw.githubusercontent.com/AzkabanV/IMG-repository/master/img_12.png)
+
+为什么created函数中的console.log(this.seller.name)比this.getAjax()中的console.log(this.seller.name)要早执行？
+
+答：因为getAjax函数中的this.$http.get('api/seller')是个Promise对象。
