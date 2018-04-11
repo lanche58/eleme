@@ -14,12 +14,12 @@
 		name: 'App',
 		data () {
 	    return {
-	      seller: {'name': 'Mark'}
+	      seller: {}
 	    };
 	  },
 	  created () {
-	    this.getAjax();
-	  },
+		  this.getAjax();
+		},
 	  methods: {
 	    getAjax: function () {
 			  var successCallback = (response) => {

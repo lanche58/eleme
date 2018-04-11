@@ -35,13 +35,3 @@ https://blog.csdn.net/qq_38209578/article/details/79227477
 ## vue-axios的使用方法
 
 https://blog.csdn.net/qq_38209578/article/details/79225698
-
-## vue生命周期函数代码异步执行问题
-
-![](https://raw.githubusercontent.com/AzkabanV/IMG-repository/master/img_11.png)
-
-![](https://raw.githubusercontent.com/AzkabanV/IMG-repository/master/img_12.png)
-
-![](https://raw.githubusercontent.com/AzkabanV/IMG-repository/master/img_13.png)
-
-![](https://raw.githubusercontent.com/AzkabanV/IMG-repository/master/img_14.png)
