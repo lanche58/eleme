@@ -13,9 +13,6 @@
 			seller: {
 				type: Object
 			}
-		},
-		created () {
-//			console.log(seller);
 		}
 	};
 </script>
