@@ -26,7 +26,7 @@
 		data () {
 			return {
 				classMap: []		
-			}
+			};
 		},
 		created () {
 			this.classMap = ['discounts-icon-decrease','discounts-icon-discount','discounts-icon_special','discounts-icon-invoice','discounts-icon-guarantee'];

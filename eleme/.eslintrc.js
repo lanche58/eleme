@@ -29,6 +29,7 @@ module.exports = {
     'indent':0,
     'no-tabs':'off',
     'no-mixed-spaces-and-tabs': 'off',
-    'no-trailing-spaces': 'off'
+    'no-trailing-spaces': 'off',
+    'comma-spacing': 'off'
   }
 }
