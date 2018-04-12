@@ -28,6 +28,7 @@ module.exports = {
     'semi':['error','always'],
     'indent':0,
     'no-tabs':'off',
-    'no-mixed-spaces-and-tabs': 'off'
+    'no-mixed-spaces-and-tabs': 'off',
+    'no-trailing-spaces': 'off'
   }
 }
