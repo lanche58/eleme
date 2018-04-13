@@ -7,9 +7,9 @@
 			<h1 class="name"><span class="brand"></span>{{seller.name}}</h1>
 			<p class="delivery">{{seller.description}}/{{seller.deliveryTime}}分钟送达</p>
 			<p v-if="seller.supports" class="discounts"><span class="discounts-icon" :class="classMap[seller.supports[0].type]"></span>{{seller.supports[0].description}}</p>
-			<div class="discounts-num" v-if="seller.supports">{{seller.supports.length}}个<span class="icon-keyboard_arrow_right"></span></div>
+			<div class="discounts-num" v-if="seller.supports" @click="showDetail">{{seller.supports.length}}个<span class="icon-keyboard_arrow_right"></span></div>
 		</div>
-		<div class="bulletin-wrapper clearfix">			
+		<div class="bulletin-wrapper clearfix" @click="showDetail">			
 			<div class="bulletin-icon fl"></div>			
 			<div class="icon-keyboard_arrow_right bulletin-arrow fr"></div>
 			<p class="bulletin-text">{{seller.bulletin}}</p>
@@ -17,24 +17,66 @@
 		<div class="background">
 			<img :src="seller.avatar"/>
 		</div>
+		<transition name='fade'>
+			<div class="detail-wrapper" v-show="ifShow">
+				<div class="detail-content">
+					<h1 class="detail-content-name">{{seller.name}}</h1>
+					<star :size=48 :score='seller.score'></star>
+					<div class="banner-title">
+						<div class="line"></div>
+						<div class="title-name">优惠信息</div>
+						<div class="line"></div>
+					</div>
+					<ul class="offers-ul">
+						<li v-for="(item,index) in seller.supports" class="offers-li" v-if="seller.supports">
+							<span :class="classMap[seller.supports[index].type]" class="discounts-icon"></span>
+							<span class="offers-li-text">{{seller.supports[index].description}}</span>
+						</li>
+					</ul>
+					<div class="banner-title">
+						<div class="line"></div>
+						<div class="title-name">商家公告</div>
+						<div class="line"></div>
+					</div>
+					<p class="seller-announcement-text">
+						{{seller.bulletin}}
+					</p>
+				</div>
+				<div class="icon-close detail-close" @click="hideDetail"></div>
+			</div>
+		</transition>
+		
 	</div>
 </template>
 
 <script>
+	import Star from '../star/star';
 	export default {
 		name: 'Header',
 		data () {
 			return {
-				classMap: []		
+				classMap: [],
+				ifShow: false
 			};
 		},
 		created () {
-			this.classMap = ['discounts-icon-decrease','discounts-icon-discount','discounts-icon_special','discounts-icon-invoice','discounts-icon-guarantee'];
+			this.classMap = ['discounts-icon-decrease','discounts-icon-discount','discounts-icon-special','discounts-icon-invoice','discounts-icon-guarantee'];
+		},
+		methods: {
+			showDetail () {
+				this.ifShow = true;
+			},
+			hideDetail () {
+				this.ifShow = false;
+			}
 		},
 		props: {
 			seller: {
 				type: Object
 			}
+		},
+		components: {
+			Star
 		}
 	};
 </script>
@@ -84,7 +126,7 @@
 		line-height: 0.12rem;
 		font-weight: 200;
 	}
-	.discounts-icon{
+	.discounts .discounts-icon{
 		width: 0.12rem;
 		height: 0.12rem;
 		margin-right: 0.04rem;
@@ -92,20 +134,61 @@
 		background-repeat: no-repeat;
 		background-size: 100% 100%;
 	}
-	.discounts-icon-decrease{
+	.discounts .discounts-icon-decrease{
 		background-image: url(decrease_1@2x.png);
 	}
-	.discounts-icon-discount{
+	.discounts .discounts-icon-discount{
 		background-image: url(discount_1@2x.png);
 	}
-	.discounts-icon_guarantee{
+	.discounts .discounts-icon-guarantee{
 		background-image: url(guarantee_1@2x.png);
 	}
-	.discounts-icon-invoice{
+	.discounts .discounts-icon-invoice{
 		background-image: url(invoice_1@2x.png);
 	}
-	.discounts-icon-special{
+	.discounts .discounts-icon-special{
 		background-image: url(special_1@2x.png);
+	}
+	.offers-ul .discounts-icon-decrease{
+		background-image: url(decrease_2@2x.png);
+	}
+	.offers-ul .discounts-icon-discount{
+		background-image: url(discount_2@2x.png);
+	}
+	.offers-ul .discounts-icon-guarantee{
+		background-image: url(guarantee_2@2x.png);
+	}
+	.offers-ul .discounts-icon-invoice{
+		background-image: url(invoice_2@2x.png);
+	}
+	.offers-ul .discounts-icon-special{
+		background-image: url(special_2@2x.png);
+	}
+	.offers-ul .discounts-icon{
+		width: 0.16rem;
+		height: 0.16rem;
+		margin-right: 0.06rem;
+		background-repeat: no-repeat;
+		background-size: 100% 100%;
+		vertical-align: top;
+	}
+	.offers-ul{
+		width: 74.4%;
+		margin: 0 auto;
+	}
+	.offers-li{
+		margin-bottom: 0.12rem;
+		font-size: 0;
+		text-align: initial;
+	}
+	.offers-li:last-child{
+		margin-bottom: 0;
+	}
+	.offers-li-text{
+		font-size: 0.12rem;
+		line-height: 0.16rem;
+		height: 0.16rem;
+		font-weight: 200;
 	}
 	.discounts-num{
 		font-size: 0.1rem;
@@ -162,24 +245,98 @@
 	.background img{
 		transform: translateY(-30%);
 	}
+	.detail-wrapper{
+		position: fixed;
+		top: 0;
+		left: 0;
+		z-index: 999;
+		width: 100%;
+		height: 100%;		
+		display: flex;
+		flex-direction: column;
+		overflow: auto;
+		text-align: center;	
+		background: rgba(7,17,27,0.8);	
+	}
+	.fade-enter-active,.fade-leave-active{
+		transition: 0.5s;		
+	}
+	.fade-leave-to,.fade-enter{
+		opacity: 0;
+		background: rgba(7,17,27,0);
+	}
+	.detail-content{
+		flex: 1;
+	}
+	.detail-close{		
+		font-size: 0.32rem;
+		margin-bottom:0.32rem ;
+		color: rgba(255,255,255,0.5);
+	}
+	.detail-content-name{
+		font-size: 0.16rem;
+		line-height: 0.16rem;
+		font-weight: 700;
+		margin: 0.64rem 0 0.16rem;
+	}
+	.banner-title{
+		display: flex;
+		width: 81%;
+		margin: 0.28rem auto 0.24rem;		
+	}
+	.title-name{
+		font-size: 0.14rem;
+		line-height: 0.14rem;
+		font-weight: 700;
+		padding: 0 0.12rem;
+	}
+	.line{
+		flex: 1;
+		border-bottom: 1px solid rgba(255,255,255,0.2);
+		position: relative;
+		top: -0.07rem;
+	}
+	.seller-announcement-text{
+		width: 74.4%;
+		margin: 0 auto;
+		font-size: 0.12rem;
+		line-height: 0.24rem;
+		font-weight: 200;
+		text-align: initial;
+	}
 	@media only screen and (-webkit-min-device-pixel-ratio:3) and (min-device-pixel-ratio:3) {
 		.brand{
 			background-image: url(brand@3x.png);
 		}
-		.discounts-icon-decrease{
+		.discounts .discounts-icon-decrease{
 			background-image: url(decrease_1@3x.png);
 		}
-		.discounts-icon-discount{
+		.discounts .discounts-icon-discount{
 			background-image: url(discount_1@3x.png);
 		}
-		.discounts-icon_guarantee{
+		.discounts .discounts-icon-guarantee{
 			background-image: url(guarantee_1@3x.png);
 		}
-		.discounts-icon-invoice{
+		.discounts .discounts-icon-invoice{
 			background-image: url(invoice_1@3x.png);
 		}
-		.discounts-icon-special{
+		.discounts .discounts-icon-special{
 			background-image: url(special_1@3x.png);
+		}
+		.offers-ul .discounts-icon-decrease{
+			background-image: url(decrease_2@3x.png);
+		}
+		.offers-ul .discounts-icon-discount{
+			background-image: url(discount_2@3x.png);
+		}
+		.offers-ul .discounts-icon-guarantee{
+			background-image: url(guarantee_2@3x.png);
+		}
+		.offers-ul .discounts-icon-invoice{
+			background-image: url(invoice_2@3x.png);
+		}
+		.offers-ul .discounts-icon-special{
+			background-image: url(special_2@3x.png);
 		}
 		.bulletin-icon{
 			background-image: url(bulletin@3x.png);

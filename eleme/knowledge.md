@@ -57,3 +57,17 @@ http://www.runoob.com/cssref/css3-pr-filter.html
 ## z-index与background重叠问题
 
 https://blog.csdn.net/qq_19865749/article/details/52030132
+
+## 如何在手机上测试vue.js项目
+
+https://blog.csdn.net/qq_31393401/article/details/79162839
+
+## Sticky footers
+
+https://www.w3cplus.com/css3/css-secrets/sticky-footers.html
+
+## backdrop-filter 和filter
+
+https://www.w3cplus.com/css3/advanced-css-filters.html
+
+https://www.cnblogs.com/wyan20/p/6558034.html
