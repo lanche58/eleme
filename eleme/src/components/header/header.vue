@@ -28,7 +28,7 @@
 						<div class="line"></div>
 					</div>
 					<ul class="offers-ul">
-						<li v-for="(item,index) in seller.supports" class="offers-li" v-if="seller.supports">
+						<li v-for="(item,index) in seller.supports" class="offers-li" v-if="seller.supports" :key="item.index">
 							<span :class="classMap[seller.supports[index].type]" class="discounts-icon"></span>
 							<span class="offers-li-text">{{seller.supports[index].description}}</span>
 						</li>
