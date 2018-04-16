@@ -118,13 +118,11 @@
 	.delivery{
 		font-size: 0.12rem;
 		line-height: 0.12rem;
-		font-weight: 200;
 		padding-bottom: 0.1rem;
 	}
 	.discounts{
 		font-size: 0.1rem;
 		line-height: 0.12rem;
-		font-weight: 200;
 	}
 	.discounts .discounts-icon{
 		width: 0.12rem;
@@ -188,12 +186,10 @@
 		font-size: 0.12rem;
 		line-height: 0.16rem;
 		height: 0.16rem;
-		font-weight: 200;
 	}
 	.discounts-num{
 		font-size: 0.1rem;
 		line-height: 0.24rem;
-		font-weight: 200;
 		height: 0.24rem;
 		padding: 0 0.08rem;
 		border-radius: 0.14rem;
@@ -215,7 +211,6 @@
 	.bulletin-text{
 		font-size: 0.1rem;
 		line-height: 0.28rem;
-		font-weight: 200;
 		overflow: hidden;
 		white-space: nowrap;
 		text-overflow: ellipsis;
@@ -276,7 +271,7 @@
 	.detail-content-name{
 		font-size: 0.16rem;
 		line-height: 0.16rem;
-		font-weight: 700;
+		font-weight: bold;
 		margin: 0.64rem 0 0.16rem;
 	}
 	.banner-title{
@@ -287,7 +282,7 @@
 	.title-name{
 		font-size: 0.14rem;
 		line-height: 0.14rem;
-		font-weight: 700;
+		font-weight: bold;
 		padding: 0 0.12rem;
 	}
 	.line{
@@ -301,7 +296,6 @@
 		margin: 0 auto;
 		font-size: 0.12rem;
 		line-height: 0.24rem;
-		font-weight: 200;
 		text-align: initial;
 	}
 	@media only screen and (-webkit-min-device-pixel-ratio:3) and (min-device-pixel-ratio:3) {

@@ -2,14 +2,16 @@
 	<div class="goods">
 		<div class="menu-wrapper" ref="menuWrapper">
 			<ul class="menu-wrapper-ul">
-				<li v-for="item in goods" :key="item.index" class="menu-wrapper-li">
-					<span class="menu-wrapper-li-span"><span class="menu-icon" v-show="item.type > 0" :class="classMap[item.type]"></span>{{item.name}}</span>
+				<li v-for="(item,index) in goods" :key="item.index" class="menu-wrapper-li" :class="{'current': currentIndex === index}" @click='getCurrentIndex(index)'>
+					<div class="menu-wrapper-li-div">
+						<span class="menu-wrapper-li-span"><span class="menu-icon" v-show="item.type > 0" :class="classMap[item.type]"></span>{{item.name}}</span>
+					</div>					
 				</li>
 			</ul>
 		</div>
 		<div class="foods-wrapper" ref="foodsWrapper">
 			<ul class="foods-wrapper-ul">
-				<li v-for="item in goods" :key="item.index" class="foods-wrapper-li">
+				<li v-for="item in goods" :key="item.index" class="foods-wrapper-li foods-wrapper-li-hook">
 					<h1 class="foods-wrapper-li-h1">{{item.name}}</h1>
 					<ul class="foods-wrapper-li-ul">
 						<li v-for="food in item.foods" :key="food.index" class="foods-wrapper-li-li">
@@ -47,29 +49,70 @@
 		},
 		data() {
 			return {
-				goods: []
+				goods: [],
+				heightList: [],
+				scrollY: 0
 			};
+		},
+		computed: {
+			currentIndex() {
+				let height1;
+				let height2;
+				for (let i = 0; i < this.heightList.length; i++) {
+					height1 = this.heightList[i];
+					height2 = this.heightList[i + 1];
+					if (!height2 || (this.scrollY >= height1 && this.scrollY < height2)) {
+						return i;
+					}					
+				}
+				return 0;
+			}
 		},
 		created() {
 			this.getAjax();
 			this.classMap = ['discounts-icon-decrease', 'discounts-icon-discount', 'discounts-icon-special', 'discounts-icon-invoice', 'discounts-icon-guarantee'];
 			this.$nextTick(() => {
-		      this.menuWrapper = new BetterScroll(this.$refs.menuWrapper, {});
-		      this.foodsWrapper = new BetterScroll(this.$refs.foodsWrapper, {});
+		      this.menuWrapper = new BetterScroll(this.$refs.menuWrapper, {
+		      	click: true
+		      });
+		      this.foodsWrapper = new BetterScroll(this.$refs.foodsWrapper, {
+		      	probeType: 3
+		      });
+		      this.foodsWrapper.on('scroll',(pos) => {
+		      	this.scrollY = Math.abs(Math.round(pos.y));
+		      });
+		      var self = this;
+		      setTimeout(function(){
+		      	self.caculateHeight();
+		      },0);	      
 		    });
 		},
 		methods: {
 			getAjax() {
-				var successCallback = (response) => {
+				let successCallback = (response) => {
 					response = response.body;
 					if (response.errno === NO_ERR) {
 						this.goods = response.data;
 					}
 				};
-				var errorCallback = (response) => {
+				let errorCallback = (response) => {
 					console.log('server error');
 				};
 				this.$http.get('api/goods').then(successCallback, errorCallback);
+			},
+			caculateHeight() {				
+				let foodList = this.$refs.foodsWrapper.getElementsByClassName('foods-wrapper-li-hook');
+				let foodHeight = 0;
+				this.heightList.push(foodHeight);
+				for (let i = 0; i < foodList.length; i++) {
+					foodHeight += foodList[i].clientHeight;
+					this.heightList.push(foodHeight);
+				}
+			},
+			getCurrentIndex(index) {
+				let foodList = this.$refs.foodsWrapper.getElementsByClassName('foods-wrapper-li-hook');
+				let el = foodList[index];
+				this.foodsWrapper.scrollToElement(el,300);
 			}
 		}		
 	};
@@ -96,6 +139,10 @@
 	}
 	
 	.menu-wrapper-li {
+				
+	}
+	
+	.menu-wrapper-li-div{
 		height: 0.54rem;
 		width: 70%;
 		margin: 0 auto;
@@ -113,7 +160,6 @@
 	.menu-wrapper-li-span {
 		font-size: 0.12rem;
 		line-height: 0.14rem;
-		font-weight: 200;
 	}
 	
 	.menu-icon {
@@ -206,7 +252,7 @@
 		display: inline-block;
 		font-size: 0.14rem;
 		line-height: 0.24rem;
-		font-weight: 700;
+		font-weight: bold;
 		color: rgb(240, 20, 20);
 		margin-right: 0.08rem;
 		padding-bottom: 0.18rem;
@@ -221,13 +267,28 @@
 		display: inline-block;
 		font-size: 0.1rem;
 		line-height: 0.24rem;
-		font-weight: 700;
+		font-weight: bold;
 		color: rgb(147, 153, 159);
 		text-decoration: line-through;
 	}
 	
 	.foods-wrapper-li-li-div-02 span {
 		font-weight: normal;
+	}
+	
+	.current{
+		background: white;
+		position: relative;
+		top: -1px;
+		z-index: 999;
+	}
+	
+	.current div{
+		border-bottom: none;		
+	}	
+	
+	.current div .menu-wrapper-li-span{
+		font-weight: bold;
 	}
 	
 	@media only screen and (-webkit-min-device-pixel-ratio:3) and (min-device-pixel-ratio:3) {

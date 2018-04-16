@@ -3,12 +3,14 @@
 		<v-header :seller='seller'></v-header>
 		<v-nav></v-nav>
 		<router-view/>
+		<v-footer :seller='seller'></v-footer>
   </div>
 </template>
 
 <script>
 	import Header from './components/header/header';
 	import Nav from './components/nav/nav';
+	import Footer from './components/footer/footer';
 	const NO_ERR = 0;
 	export default {
 		name: 'App',
@@ -36,7 +38,8 @@
 	  },
 		components: {
 			'v-header': Header,
-			'v-nav': Nav
+			'v-nav': Nav,
+			'v-footer': Footer
 		}
 	};
 </script>

@@ -31,6 +31,8 @@ module.exports = {
     'no-mixed-spaces-and-tabs': 'off',
     'no-trailing-spaces': 'off',
     'comma-spacing': 'off',
-    'space-before-function-paren': 'off'
+    'space-before-function-paren': 'off',
+    'space-before-blocks': 'off',
+    'eol-last': 'off'
   }
 }
