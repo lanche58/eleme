@@ -85,6 +85,7 @@
 	.cart-left{
 		flex: 1;
 		background: rgb(20,29,39);
+		margin-right: -1px;
 	}
 	.cart-right{
 		flex: 0 0 1.05rem;

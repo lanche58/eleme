@@ -80,6 +80,11 @@
 		      });
 		      this.foodsWrapper.on('scroll',(pos) => {
 		      	this.scrollY = Math.abs(Math.round(pos.y));
+		      	let menuWrapperOuterHeight = document.querySelector(".menu-wrapper").clientHeight;
+		      	let menuWrapperHeight = document.querySelector(".menu-wrapper-ul").clientHeight;		      	
+		      	let foodsWrapperHeight = document.querySelector(".foods-wrapper-ul").clientHeight;
+		      	let shouldScrollHeight = -Math.round(this.scrollY/foodsWrapperHeight*(menuWrapperHeight-menuWrapperOuterHeight));
+		      	this.menuWrapper.scrollTo(0,shouldScrollHeight,300);
 		      });
 		      var self = this;
 		      setTimeout(function(){
@@ -123,7 +128,7 @@
 		display: flex;
 		position: absolute;
 		top: 1.72rem;
-		bottom: 0.46rem;
+		bottom: 0.48rem;
 		width: 100%;
 		overflow: hidden;
 	}
