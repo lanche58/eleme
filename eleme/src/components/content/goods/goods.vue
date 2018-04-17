@@ -29,6 +29,9 @@
 									<span>¥</span>{{food.oldPrice}}
 								</div>
 							</div>
+							<div class="purchaseButton-wrapper">
+								<purchasebutton :food='food'></purchasebutton>
+							</div>
 						</li>
 					</ul>
 				</li>
@@ -39,6 +42,7 @@
 
 <script>
 	import BetterScroll from 'better-scroll';
+	import PurchaseButton from '../../purchaseButton/purchaseButton';	
 	const NO_ERR = 0;
 	export default {
 		name: 'Goods',
@@ -54,6 +58,9 @@
 				scrollY: 0
 			};
 		},
+		components: {
+			'purchasebutton': PurchaseButton
+		},
 		computed: {
 			currentIndex() {
 				let height1;
@@ -66,7 +73,7 @@
 					}					
 				}
 				return 0;
-			}
+			}			
 		},
 		created() {
 			this.getAjax();
@@ -76,20 +83,23 @@
 		      	click: true
 		      });
 		      this.foodsWrapper = new BetterScroll(this.$refs.foodsWrapper, {
-		      	probeType: 3
+		      	probeType: 3,
+		      	click: true
 		      });
 		      this.foodsWrapper.on('scroll',(pos) => {
 		      	this.scrollY = Math.abs(Math.round(pos.y));
-		      	let menuWrapperOuterHeight = document.querySelector(".menu-wrapper").clientHeight;
-		      	let menuWrapperHeight = document.querySelector(".menu-wrapper-ul").clientHeight;		      	
-		      	let foodsWrapperHeight = document.querySelector(".foods-wrapper-ul").clientHeight;
-		      	let shouldScrollHeight = -Math.round(this.scrollY/foodsWrapperHeight*(menuWrapperHeight-menuWrapperOuterHeight));
-		      	this.menuWrapper.scrollTo(0,shouldScrollHeight,300);
+		      	let menuWrapperOuterHeight = document.querySelector('.menu-wrapper').clientHeight;
+		      	let menuWrapperHeight = document.querySelector('.menu-wrapper-ul').clientHeight;		      	
+		      	let foodsWrapperHeight = document.querySelector('.foods-wrapper-ul').clientHeight;
+		      	let shouldScrollHeight = -Math.round(this.scrollY / foodsWrapperHeight * (menuWrapperHeight - menuWrapperOuterHeight));
+		      	if ((menuWrapperHeight - menuWrapperOuterHeight) > 0){
+		      		this.menuWrapper.scrollTo(0,shouldScrollHeight,300);
+		      	}		      	
 		      });
 		      var self = this;
 		      setTimeout(function(){
 		      	self.caculateHeight();
-		      },0);	      
+		      },0);		      		          
 		    });
 		},
 		methods: {
@@ -119,11 +129,11 @@
 				let el = foodList[index];
 				this.foodsWrapper.scrollToElement(el,300);
 			}
-		}		
+		}	
 	};
 </script>
 
-<style>
+<style scoped="scoped">
 	.goods {
 		display: flex;
 		position: absolute;
@@ -215,6 +225,7 @@
 		font-size: 0;
 		display: flex;
 		width: 100%;
+		position: relative;
 	}
 	
 	.foods-wrapper-li-li:last-child {
@@ -294,6 +305,12 @@
 	
 	.current div .menu-wrapper-li-span{
 		font-weight: bold;
+	}
+	
+	.purchaseButton-wrapper{
+		position: absolute;
+		right: 0;
+		bottom: 0.12rem;
 	}
 	
 	@media only screen and (-webkit-min-device-pixel-ratio:3) and (min-device-pixel-ratio:3) {

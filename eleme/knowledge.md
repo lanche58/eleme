@@ -36,7 +36,7 @@ https://blog.csdn.net/qq_38209578/article/details/79227477
 
 https://blog.csdn.net/qq_38209578/article/details/79225698
 
-## 问题一
+## 问题
 
 ![](https://raw.githubusercontent.com/AzkabanV/IMG-repository/master/img_11.png)
 
@@ -83,3 +83,21 @@ https://cn.vuejs.org/v2/guide/reactivity.html#search-query-sidebar
 ## className-hook
 
 无样式的类名，仅用来被js选择
+
+## 用padding来增加按钮的可点击区域
+
+## 非父子组件之间传值
+
+https://blog.csdn.net/lander_xiong/article/details/79018737
+
+https://cn.vuejs.org/v2/guide/components.html#%E9%9D%9E%E7%88%B6%E5%AD%90%E7%BB%84%E4%BB%B6%E7%9A%84%E9%80%9A%E4%BF%A1
+
+## transition 多个元素嵌套使用过渡
+
+https://blog.csdn.net/xqnode/article/details/60875478
+
+## 问题
+
+已绑定key属性却仍然有 children must be keyed 警告
+
+解决：之前绑定的值是对象的属性(item.index)，现在改为数字index

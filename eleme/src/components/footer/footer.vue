@@ -17,12 +17,13 @@
 			</div>
 		</div>
 		<div class="cart-right">
-			<div class="cart-right-p" :class="{'cart-right-p-02':(totalPrice > seller.minPrice)&&(totalCount !== 0)}">{{currentPrice}}</div>
+			<div class="cart-right-p" :class="{'cart-right-p-02':(totalPrice >= seller.minPrice)&&(totalCount !== 0)}">{{currentPrice}}</div>
 		</div>
 	</div>
 </template>
 
 <script>
+	import Bus from '../../common/js/bus.js';
 	export default {
 		name: 'Cart',
 		props: {
@@ -31,18 +32,28 @@
 				default() {
 					return {};
 				}
-			},
-			selectedFood: {
-				type: Array,
-				default() {
-					return [
-						{
-							price: 10,
-							count: 1
-						}
-					];
-				}
 			}
+		},
+		data() {
+			return {
+				selectedFood: []
+			};
+		},
+		created() {
+		    Bus.$on('val', (data) => {
+		    	let len = this.selectedFood.length;
+		    	for (let i = 0; i < len; i++) {
+		    		if (this.selectedFood[i].name === data.name){
+		    			this.selectedFood.splice(i,1,data);
+		    		}
+		    	}
+		    	let isName = this.selectedFood.every((item,index,arr) => {
+		    		return item.name !== data.name;
+		    	});
+		    	if (isName){
+		    		this.selectedFood.push(data);
+		    	}
+		    });
 		},
 		computed: {
 			totalPrice() {
@@ -64,7 +75,7 @@
 					return '¥' + this.seller.minPrice + '起送';
 				} else if ((this.totalPrice < this.seller.minPrice) && (this.totalCount !== 0)){
 					return '还差¥' + (this.seller.minPrice - this.totalPrice) + '起送';
-				} else if ((this.totalPrice > this.seller.minPrice) && (this.totalCount !== 0)){
+				} else if ((this.totalPrice >= this.seller.minPrice) && (this.totalCount !== 0)){
 					return '去结算';
 				}
 			}
