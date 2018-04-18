@@ -101,3 +101,7 @@ https://blog.csdn.net/xqnode/article/details/60875478
 已绑定key属性却仍然有 children must be keyed 警告
 
 解决：之前绑定的值是对象的属性(item.index)，现在改为数字index
+
+## 大图片加载之页面防"抖动"
+
+![](https://raw.githubusercontent.com/AzkabanV/IMG-repository/master/img_15.png)
