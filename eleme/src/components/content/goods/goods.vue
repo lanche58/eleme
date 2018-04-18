@@ -14,7 +14,7 @@
 				<li v-for="item in goods" :key="item.index" class="foods-wrapper-li foods-wrapper-li-hook">
 					<h1 class="foods-wrapper-li-h1">{{item.name}}</h1>
 					<ul class="foods-wrapper-li-ul">
-						<li v-for="food in item.foods" :key="food.index" class="foods-wrapper-li-li">
+						<li v-for="food in item.foods" :key="food.index" class="foods-wrapper-li-li" @click="selectFood(food)">
 							<div class="foods-wrapper-li-li-left">
 								<img :src="food.icon" class="foods-wrapper-li-li-icon" />
 							</div>
@@ -37,12 +37,14 @@
 				</li>
 			</ul>
 		</div>
+		<goodsdetails :food='selectedFood' ref='goodsDetails'></goodsdetails>
 	</div>
 </template>
 
 <script>
 	import BetterScroll from 'better-scroll';
 	import PurchaseButton from '../../purchaseButton/purchaseButton';	
+	import GoodsDetails from '../../goodsDetails/goodsDetails';
 	const NO_ERR = 0;
 	export default {
 		name: 'Goods',
@@ -55,11 +57,13 @@
 			return {
 				goods: [],
 				heightList: [],
-				scrollY: 0
+				scrollY: 0,
+				selectedFood: {}
 			};
 		},
 		components: {
-			'purchasebutton': PurchaseButton
+			'purchasebutton': PurchaseButton,
+			'goodsdetails': GoodsDetails
 		},
 		computed: {
 			currentIndex() {
@@ -128,6 +132,10 @@
 				let foodList = this.$refs.foodsWrapper.getElementsByClassName('foods-wrapper-li-hook');
 				let el = foodList[index];
 				this.foodsWrapper.scrollToElement(el,300);
+			},
+			selectFood(food) {
+				this.selectedFood = food;
+				this.$refs.goodsDetails.show();
 			}
 		}	
 	};

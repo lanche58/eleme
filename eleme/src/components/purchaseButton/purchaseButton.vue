@@ -1,19 +1,12 @@
 <template>
 	<div class="purchaseButton clearfix">
 		<transition name="move">
-			<div class="decrease-button fl" v-show='food.count > 0' @click="removeFood">
+			<div class="decrease-button fl" v-show='food.count > 0' @click.stop="removeFood">
 				<div class="icon-remove_circle_outline roll" ></div>
 			</div>						
 		</transition>					
 		<div class="countNum fl" v-show='food.count > 0'>{{food.count}}</div>
-		<div class="increase-button icon-add_circle fl" @click="addFood"></div>
-		<div class="balls-wrapper">
-			<transition-group tag='div' name='drop' @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter">
-				<div :key="index" class="ball" v-for="(ball,index) in balls" v-show="ball.show">
-					<div class="ball-inner"></div>
-				</div>
-			</transition-group>
-		</div>
+		<div class="increase-button icon-add_circle fl" @click.stop="addFood"></div>
 	</div>	
 </template>
 
@@ -27,28 +20,6 @@
 				type: Object
 			}
 		},
-		data() {
-			return {
-				balls: [
-					{
-						show: false
-					},
-					{
-						show: false
-					},
-					{
-						show: false
-					},
-					{
-						show: false
-					},
-					{
-						show: false
-					}
-				],
-				dropBalls: []
-			};
-		},
 		methods: {
 			addFood() {
 				if (!this.food.count){
@@ -57,33 +28,17 @@
 					this.food.count++;
 				}
 				this.submitData();
-				let len = this.balls.length;
-				for (let i = 0; i < len; i++) {
-					let ball = this.balls[i];
-					if (!ball.show){
-						ball.show = true;
-						ball.el = event.target;
-						this.dropBalls.push(ball);
-						return;
-					}
-				}
+				console.log(event.target.getBoundingClientRect().left);
 			},
 			removeFood() {
+				if (this.food.count === 0){
+					return;
+				}
 				this.food.count--;
 				this.submitData();
 			},
 			submitData() {
 				Bus.$emit('val', this.food);
-			},
-			beforeEnter(el) {
-				console.log(1);
-				el.style.tranfrom = 'translate3d(0,300px,0)';
-			},
-			enter() {
-				console.log(1);
-			},
-			afterEnter() {
-				console.log(1);
 			}
 		}
 	};
@@ -108,7 +63,7 @@
 		line-height: 0.24rem;
 		color: rgb(147,153,159);
 	}
-	.move-enter-active,.move-leave-active,.roll,.drop-enter-active,.drop-leave-active,.ball-inner{
+	.move-enter-active,.move-leave-active,.roll{
 		transition: 0.5s linear;
 	}
 	.move-enter,.move-leave-to{
@@ -117,17 +72,5 @@
 	}
 	.move-enter .roll,.move-leave-to .roll{
 		transform: rotate(180deg);
-	}
-	.ball-inner{
-		width: 0.16rem;
-		height: 0.16rem;
-		border-radius: 100%;
-		background: rgb(0,160,220);
-	}
-	.ball{
-		position: fixed;
-		top: 0;
-		left: 0;
-		z-index: 1000;
 	}
 </style>
