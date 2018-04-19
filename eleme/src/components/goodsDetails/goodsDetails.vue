@@ -28,6 +28,34 @@
 					<h2 class="goods-intr-h2">商品介绍</h2>
 					<p class="goods-intr-p">{{food.info}}</p>
 				</div>
+				<div class="goods-ratings" v-show="food.ratings">
+					<h2 class="goods-ratings-h2">商品评价</h2>
+					<comments :desc = 'desc' :ratings = 'food.ratings' ref="comments"></comments>
+					<div class="comments-wrapper">
+						<div class="comments-text" v-show="food.ratings && food.ratings.length > 0">
+							<ul class="comments-text-ul">
+								<li class="comments-text-li" v-for="item in food.ratings" :key="item.index" v-show="selectShow(item.rateType,item.text)">
+									<div class="li-header clearfix">
+										<div class="li-header-left fl">
+											{{item.rateTime | formatDates}}
+										</div>
+										<div class="li-header-right fr">
+											<span class="fl">{{item.username}}</span>
+											<img :src="item.avatar" class="li-header-right-avatar fl"/>
+										</div>
+									</div>
+									<div class="li-text clearfix">
+										<span :class="{'icon-thumb_down':item.rateType===1,'icon-thumb_up':item.rateType===0,'down-color':item.rateType===1,'up-color':item.rateType===0}" class="fl icon-thumb"></span>
+										{{item.text}}
+									</div>
+								</li>
+							</ul>
+						</div>
+						<div class="no-comments" v-show="!food.ratings || food.ratings.length === 0">
+							暂无评论
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</transition>
@@ -37,8 +65,18 @@
 <script>
 	import Vue from 'vue';
 	import Bus from '../../common/js/bus.js';
+	import {formatDate} from '../../common/js/formatDate.js';
 	import BetterScroll from 'better-scroll';
 	import PurchaseButton from '../purchaseButton/purchaseButton';	
+	import Comments from '../comments/comments';
+	
+	// eslint-disable-next-line
+	const POSITIVE = 0;
+	// eslint-disable-next-line
+	const NEGATIVE = 1;
+	// eslint-disable-next-line
+	const ALL = 2;
+	
 	export default {
 		name: 'GoodsDetails',
 		props: {
@@ -48,12 +86,19 @@
 		},
 		data() {
 			return {
-				isShow: false
+				isShow: false,
+				desc: {
+					all: '全部',
+					positive: '推荐',
+					negative: '吐槽'
+				}
 			};
 		},
 		methods: {
 			show() {
 				this.isShow = true;
+				this.$refs.comments.selectTypeData = ALL;
+				this.$refs.comments.hasContentData = false;
 				this.$nextTick(() => {
 					if (!this.scroll){
 						this.scroll = new BetterScroll(this.$refs.goodsDetails,{
@@ -77,10 +122,26 @@
 			},
 			submitData() {
 				Bus.$emit('val', this.food);
+			},
+			selectShow(type,text) {
+				if (this.$refs.comments.hasContentData === true && !text){
+					return false;
+				} else if (this.$refs.comments.selectTypeData === ALL){
+					return true;
+				} else {
+					return this.$refs.comments.selectTypeData === type;
+				}				
 			}
 		},
 		components: {
-			'purchasebutton': PurchaseButton
+			'purchasebutton': PurchaseButton,
+			'comments': Comments
+		},
+		filters: {
+			formatDates(time){
+				let now = new Date(time);
+				return formatDate(now,'yyyy-MM-dd hh:mm');
+			}
 		}
 	};
 </script>
@@ -115,14 +176,14 @@
 		font-size: 0.2rem;
 		color: rgb(255,255,255);
 	}
-	.header,.goods-intr{
+	.header,.goods-intr,.goods-ratings{
 		padding: 0 0.18rem;
 		background: rgb(255,255,255);
 		border-bottom: 1px solid rgba(7,17,27,0.1);
 		margin-bottom: 0.16rem;
 		position: relative;
 	}
-	.header-h1,.goods-intr-h2{
+	.header-h1,.goods-intr-h2,.goods-ratings-h2{
 		font-size: 0.14rem;
 		line-height: 0.14rem;
 		padding: 0.18rem 0 0.08rem;
@@ -177,10 +238,10 @@
 		right: 0.18rem;
 		bottom: 0.18rem;
 	}
-	.goods-intr{
+	.goods-intr,.goods-ratings{
 		border-top: 1px solid rgba(7,17,27,0.1);
 	}
-	.goods-intr-h2{
+	.goods-intr-h2,.goods-ratings-h2{
 		font-weight: normal;
 	}
 	.goods-intr-p{
@@ -188,5 +249,45 @@
 		font-size: 0.12rem;
 		line-height: 0.24rem;
 		color: rgb(77,85,93);
+	}
+
+	.comments-text-li{
+		border-bottom: 1px solid rgba(7,17,27,0.1);
+	}
+	.li-header{
+		margin: 0.16rem 0 0.06rem;
+	}
+	.li-header-left,.li-header-right{
+		font-size: 0.1rem;
+		line-height: 0.12rem;
+		color: rgb(147,153,159);
+	}
+	.li-header-right-avatar{
+		width: 0.12rem;
+		margin-left: 0.06rem;
+		border-radius: 100%;
+	}
+	.icon-thumb{
+		font-size: 0.12rem;
+		line-height: 0.24rem;
+		margin-right: 0.04rem;
+	}
+	.li-text{
+		margin-bottom: 0.16rem;
+		font-size: 0.12rem;
+		line-height: 0.24rem;
+		color: rgb(7,17,27);
+	}
+	.down-color{
+		color: rgb(147,153,159);
+	}
+	.up-color{
+		color: rgb(0,160,220);
+	}
+	.no-comments{
+		padding: 0.16rem 0;
+		font-size: 0.12rem;
+		line-height: 0.24rem;
+		color: rgb(7,17,27);
 	}
 </style>

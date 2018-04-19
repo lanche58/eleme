@@ -28,7 +28,6 @@
 					this.food.count++;
 				}
 				this.submitData();
-				console.log(event.target.getBoundingClientRect().left);
 			},
 			removeFood() {
 				if (this.food.count === 0){

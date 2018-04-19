@@ -2,7 +2,7 @@
   <div id="app">
 		<v-header :seller='seller'></v-header>
 		<v-nav></v-nav>
-		<router-view/>
+		<router-view :seller='seller' :ratings='ratings'/>
 		<v-footer :seller='seller'></v-footer>
   </div>
 </template>
@@ -16,14 +16,16 @@
 		name: 'App',
 		data () {
 	    return {
-	      seller: {}
+	      seller: {},
+	      ratings: []
 	    };
 	  },
 	  created () {
-		  this.getAjax();
+		  this.getSellerAjax();
+		  this.getRatingsAjax();
 		},
 	  methods: {
-	    getAjax: function () {
+	    getSellerAjax() {
 			  var successCallback = (response) => {
 			  	response = response.body;
 			  	if (response.errno === NO_ERR) {
@@ -34,7 +36,19 @@
 			      console.log('server error');
 			  };
 	      this.$http.get('api/seller').then(successCallback, errorCallback);
-	    }
+	    },
+	    getRatingsAjax() {
+				let successCallback = (response) => {
+					response = response.body;
+					if (response.errno === NO_ERR) {
+						this.ratings = response.data;
+					}
+				};
+				let errorCallback = (response) => {
+					console.log('server error');
+				};
+				this.$http.get('api/ratings').then(successCallback, errorCallback);
+			}
 	  },
 		components: {
 			'v-header': Header,

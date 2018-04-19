@@ -145,6 +145,7 @@
 	.goods {
 		display: flex;
 		position: absolute;
+		left: 0;
 		top: 1.72rem;
 		bottom: 0.48rem;
 		width: 100%;
