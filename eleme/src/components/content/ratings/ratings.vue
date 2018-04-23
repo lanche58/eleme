@@ -1,5 +1,5 @@
 <template>
-	<div class="ratings" ref='ratings'>
+	<div class="ratings" ref='ratingsScroll'>
 		<div class="ratings-content">
 			<div class="ratings-content-header">
 				<div class="ratings-content-header-left">
@@ -14,10 +14,10 @@
 				</div>
 			</div>
 			<div class="ratings-content-main">
-				<comments :desc = 'desc' :ratings = 'ratingsData' ref="comments"></comments>
+				<comments :desc = 'desc' :ratings = 'ratings' ref="comments"></comments>
 				<div class="comments-wrapper">
 					<ul class="comments-wrapper-ul">
-						<li class="comments-wrapper-li" v-for="item in ratingsData" v-show="selectShow(item.rateType,item.text)" :key='item.index'>
+						<li class="comments-wrapper-li" v-for="item in ratings" v-show="selectShow(item.rateType,item.text)" :key='item.index'>
 							<div class="comments-wrapper-li-left">
 								<img :src="item.avatar" class="comments-wrapper-li-left-avatar"/>
 							</div>
@@ -79,21 +79,16 @@
 					positive: '满意',
 					negative: '不满意'
 				},
-				ratings: [],
-				ratingsData: []
+				ratings: []
 			};
 		},
 		created() {	
 			this.getRatingsAjax();
 			this.$nextTick(() => {				
-				this.ratings = new BetterScroll(this.$refs.ratings, {
+				this.ratingsScroll = new BetterScroll(this.$refs.ratingsScroll, {
 		      		click: true
 		    	});		    	
-			});	
-			let self = this;
-			setTimeout(function(){
-				self.ratingsData = self.ratings;
-			},0);			
+			});			
 		},
 		methods: {
 			getRatingsAjax() {
