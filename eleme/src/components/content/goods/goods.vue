@@ -146,7 +146,7 @@
 		display: flex;
 		position: absolute;
 		left: 0;
-		top: 1.72rem;
+		top: 1.75rem;
 		bottom: 0.48rem;
 		width: 100%;
 		overflow: hidden;

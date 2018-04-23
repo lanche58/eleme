@@ -92,7 +92,7 @@
 		position: relative;
 	}
 	.logo{
-		width: 17.07%;
+		width: 0.64rem;
 		padding: 0.24rem 0.16rem 0.18rem 0.24rem;
 		border-radius: 0.2rem;
 		overflow: hidden;
