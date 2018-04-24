@@ -2,7 +2,9 @@
   <div id="app">
 		<v-header :seller='seller'></v-header>
 		<v-nav></v-nav>
-		<router-view :seller='seller'/>
+		<keep-alive>
+			<router-view :seller='seller'/>
+		</keep-alive>		
 		<v-footer :seller='seller'></v-footer>
   </div>
 </template>
@@ -11,23 +13,29 @@
 	import Header from './components/header/header';
 	import Nav from './components/nav/nav';
 	import Footer from './components/footer/footer';
+	import {urlParse} from './common/js/util.js';
 	const NO_ERR = 0;
 	export default {
 		name: 'App',
 		data () {
 	    return {
-	      seller: {}
+	      seller: {
+	      	id: (() => {
+	      		let queryParam = urlParse();
+	      		return queryParam.id;
+	      	})()
+	      }
 	    };
 	  },
 	  created () {
-		  this.getSellerAjax();		  
+		  this.getSellerAjax();	
 		},
 	  methods: {
 	    getSellerAjax() {
 			  var successCallback = (response) => {
 			  	response = response.body;
 			  	if (response.errno === NO_ERR) {
-			    	this.seller = response.data;
+							this.seller = Object.assign({},this.seller,response.data);
 			  	}
 			  };
 			  var errorCallback = (response) => {

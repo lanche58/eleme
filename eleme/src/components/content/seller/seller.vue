@@ -70,6 +70,7 @@
 	import Star from '../../star/star';
 	import Swiper from 'swiper';
 	import 'swiper/dist/css/swiper.min.css';
+	import {saveToLocal,loadFromLocal} from '../../../common/js/store.js';
 	
 	export default {
 		name: 'Seller',
@@ -83,7 +84,9 @@
 		},
 		data() {
 			return {
-				isFavorite: false
+				isFavorite: (() => {
+					return loadFromLocal(this.seller.id,'favorite',false);
+				})()
 			};
 		},
 		computed: {
@@ -122,6 +125,7 @@
 		methods: {
 			collect() {
 				this.isFavorite = !this.isFavorite;
+				saveToLocal(this.seller.id,'favorite',this.isFavorite);
 			}
 		}
 	};
