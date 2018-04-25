@@ -105,3 +105,13 @@ https://blog.csdn.net/xqnode/article/details/60875478
 ## 大图片加载之页面防"抖动"
 
 ![](https://raw.githubusercontent.com/AzkabanV/IMG-repository/master/img_15.png)
+
+## 模拟服务器
+
+文件 product.server.js
+
+启动 node product.server.js
+
+## 课程笔记
+
+https://blog.csdn.net/lsy__lsy/article/details/79924270
